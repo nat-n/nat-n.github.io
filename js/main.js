@@ -1,5 +1,9 @@
 'use strict'
 
+$(window).bind("load", function(){
+  $('#container.setup').removeClass('setup');
+});
+
 /*
 
 Make the cursor more fun.
@@ -26,7 +30,7 @@ Make the links drift dreamily.
 
 var Floater = (function() {
   var minY, minX, maxY, maxX, updateBounds;
-  var linkarea = $('div#linkarea'),
+  var linkarea = $('div#bubble-wrapper'),
       floaterRadius = 47;
 
   function Floater(element) {
@@ -55,11 +59,11 @@ var Floater = (function() {
 
   updateBounds = function() {
     var pos = linkarea.position();
-    minY = pos.top + floaterRadius;
+    minY = 0;
     minX = pos.left + floaterRadius;
     maxX = pos.left + linkarea.width() - floaterRadius * 2;
     maxY = minY + linkarea.height() - floaterRadius * 2;
-    console.log(floaters)
+    console.log(minY, minX, maxX, maxY, linkarea.height())
   }
   window.onresize = updateBounds;
 
@@ -92,3 +96,14 @@ $('.bubble').each(function(i){
 
 // requestAnimationFrame => run ticks
 
+
+
+
+// super obfusticated mail action
+
+$('.compose').click(function() {
+  var i, str = "";
+  var codes = [109, 97, 105, 108, 116, 111, 58, 104, 101, 108, 108, 111, 64, 110, 97, 116, 110, 46, 109, 101];
+  for (i = 0; i < codes.length; i++) str += String.fromCharCode(codes[i]);
+  document.location.href = str;
+});
