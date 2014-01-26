@@ -24,7 +24,7 @@ window.onmousemove = function(e){
 
 /*
 
-Make the links drift dreamily.
+Make the bubbles drift dreamily.
 
 */
 
@@ -33,6 +33,13 @@ var Floater = (function() {
   var linkarea = $('div#bubble-wrapper'),
       floaterRadius = 47;
 
+  linkarea.mousemove(function(e){
+    var i;
+    for (i = 0; i < floaters.length; i++) {
+      floaters[i].frozen = false;
+    }
+  });
+
   function Floater(element) {
     var self = this;
 
@@ -40,30 +47,40 @@ var Floater = (function() {
     updateBounds();
 
     this.element = element;
+    this.element.onmouseover = function(e){
+      self.frozen = true;
+      e.cancelBubble = true;
+      e.stopPropagation();
+      console.log(self.frozen);
+    };
+
+    this.element.onmouseout = function(e){
+      self.frozen = true;
+      e.cancelBubble = true;
+      e.stopPropagation();
+      console.log(self.frozen);
+    };
 
     // set initial position
     this.x = minX + Math.random() * (maxX - minX);
     this.y = minY + Math.random() * (maxY - minY);
 
-    // set initial velocity
-    this.vx
-    this.vy
+    // set initial velocity in pixels per second
+    this.vx = 0.2 * (Math.random() - 0.5);
+    this.vy = 0.2 * (Math.random() - 0.5);
     this.frozen = false;
 
     // set initial float force
     this.fx
     this.fy
-
-    this.update();
   };
 
   updateBounds = function() {
     var pos = linkarea.position();
     minY = 0;
-    minX = pos.left + floaterRadius;
+    minX = 0;
     maxX = pos.left + linkarea.width() - floaterRadius * 2;
     maxY = minY + linkarea.height() - floaterRadius * 2;
-    console.log(minY, minX, maxX, maxY, linkarea.height())
   }
   window.onresize = updateBounds;
 
@@ -72,14 +89,41 @@ var Floater = (function() {
     this.frozen = frozen;
   };
 
-  Floater.prototype.tick = function() {
-    // do physics
-  };
+  Floater.prototype.tick = function(delta) {
+    // add dynamic forces
 
-  Floater.prototype.update = function() {
-    console.log(this);
-    this.element.style.setProperty('left', this.x + 'px');
-    this.element.style.setProperty('top', this.y + 'px');
+
+    // add velocity
+    if (!this.frozen) {
+      this.x += this.vx * delta;
+      this.y += this.vy * delta;
+    }
+
+    // detect bubble collisions
+
+
+    // detect boundary collisions
+
+    if (this.x < minX) {
+      this.x += minX - this.x;
+      this.vx = -this.vx;
+    }
+
+    if (this.x > maxX) {
+      this.x += maxX - this.x;
+      this.vx = -this.vx;
+    }
+
+    if (this.y < minY) {
+      this.y += minY - this.y;
+      this.vy = -this.vy;
+    }
+
+    if (this.y > maxY) {
+      this.y += maxY - this.y;
+      this.vy = -this.vy;
+    }
+
   };
 
   return Floater;
@@ -94,9 +138,35 @@ $('.bubble').each(function(i){
   floaters.push(new Floater(this));
 });
 
-// requestAnimationFrame => run ticks
 
+// animate floaters
 
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+var time;
+(function bubbleLoop(){
+  var i, f, now, delta;
+
+  requestAnimFrame(bubbleLoop);
+
+  now = new Date().getTime();
+  delta = now - (time || now);
+  time = now;
+
+  for (i = 0; i < floaters.length; i++) {
+    f = floaters[i];
+    f.tick(delta);
+    f.element.style.setProperty('left', f.x + 'px');
+    f.element.style.setProperty('top', f.y + 'px');
+  }
+})();
 
 
 // super obfusticated mail action
