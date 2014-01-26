@@ -31,7 +31,7 @@ Make the bubbles drift dreamily.
 var Floater = (function() {
   var minY, minX, maxY, maxX, updateBounds;
   var linkarea = $('div#bubble-wrapper'),
-      floaterRadius = 45;
+      floaterRadius = 43;
 
   function Floater(element) {
     var self = this;
@@ -94,7 +94,7 @@ var Floater = (function() {
     }
 
     // detect bubble collisions
-    for (i = this.i = 1; i < floaters.length; i++) {
+    for (i = this.i + 1; i < floaters.length; i++) {
       other = floaters[i];
 
       if (this === other) { continue; }
