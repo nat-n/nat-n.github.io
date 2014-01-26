@@ -187,8 +187,8 @@ h1 span.first-letter {
   vertical-align: middle;
   z-index: 7;
 
-  //transition: all 0.9s linear;
-  //-webkit-transition: all 0.9s linear;
+  transition: all 0.01s linear;
+  -webkit-transition: all 0.05s linear;
 }
 
 .bubble span, .bubble a {

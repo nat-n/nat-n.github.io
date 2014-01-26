@@ -31,17 +31,13 @@ Make the bubbles drift dreamily.
 var Floater = (function() {
   var minY, minX, maxY, maxX, updateBounds;
   var linkarea = $('div#bubble-wrapper'),
-      floaterRadius = 47;
-
-  linkarea.mousemove(function(e){
-    var i;
-    for (i = 0; i < floaters.length; i++) {
-      floaters[i].frozen = false;
-    }
-  });
+      floaterRadius = 45;
 
   function Floater(element) {
     var self = this;
+
+    // floater knows it's index in floaters array
+    this.i = floaters.length;
 
     // set max bounds based on size/position of div.linkarea
     updateBounds();
@@ -49,17 +45,11 @@ var Floater = (function() {
     this.element = element;
     this.element.onmouseover = function(e){
       self.frozen = true;
-      e.cancelBubble = true;
-      e.stopPropagation();
-      console.log(self.frozen);
+    };
+    this.element.onmouseout = function(e){
+      self.frozen = false;
     };
 
-    this.element.onmouseout = function(e){
-      self.frozen = true;
-      e.cancelBubble = true;
-      e.stopPropagation();
-      console.log(self.frozen);
-    };
 
     // set initial position
     this.x = minX + Math.random() * (maxX - minX);
@@ -84,13 +74,17 @@ var Floater = (function() {
   }
   window.onresize = updateBounds;
 
-  Floater.prototype.setFrozen = function(frozen) {
-    // allow a floater to temporarily have it's velocity held at zero
-    this.frozen = frozen;
-  };
+  // dot product of two vectors represented as arrays
+  function dotprod2D(ax, ay, bx, by) {
+    return ax * bx + ay * by;
+  }
+
 
   Floater.prototype.tick = function(delta) {
+    var f, vx, vy, nx, ny, distance, i, other, factor;
     // add dynamic forces
+    // weak attraction to mouse?
+    // random drift force? calculated from time depended sinwave field?
 
 
     // add velocity
@@ -100,7 +94,28 @@ var Floater = (function() {
     }
 
     // detect bubble collisions
+    for (i = this.i = 1; i < floaters.length; i++) {
+      other = floaters[i];
 
+      if (this === other) { continue; }
+
+      // distance between centers of the two floaters
+      distance = Math.sqrt( Math.pow(this.x - floaters[i].x, 2) + Math.pow(this.y - floaters[i].y, 2) );
+
+      if ( distance <= 2 * floaterRadius ) {
+        // collision normal
+        nx = (this.x - floaters[i].x) / distance;
+        ny = (this.y - floaters[i].y) / distance;
+
+        // simplified elastic collision factor
+        factor = (this.vx * nx + this.vy * ny) - (other.vx * nx + other.vy * ny);
+
+        this.vx -= factor * nx;
+        this.vy -= factor * ny;
+        other.vx += factor * nx;
+        other.vy += factor * ny;
+      }
+    };
 
     // detect boundary collisions
 
