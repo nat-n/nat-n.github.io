@@ -49,14 +49,6 @@
   text-align: center;
 }
 
-#nav-links *:hover {
-  cursor: pointer;
-}
-
-#nav-links *:hover i.fa {
-  font-size: 1.2em !important;
-}
-
 /*
 
   Layout
@@ -86,12 +78,14 @@ Responsive layout
 
 */
 
-.responsive-large #banner h1 {
-  margin-left: 150px;
-}.responsive-large #banner #gravatar {
-  margin-left: 75px;
-}.responsive-large #nav-links {
-  margin-left: 50px;
+@media (min-device-width: 1200px) {
+  .responsive-large #banner h1 {
+    margin-left: 150px;
+  }.responsive-large #banner #gravatar {
+    margin-left: 75px;
+  }.responsive-large #nav-links {
+    margin-left: 50px;
+  }
 }
 
 .responsive-default #banner h1 {
@@ -256,7 +250,23 @@ h1 span.first-letter {
   z-index: 7;
 }
 
-#nav-links span:hover::before, #nav-links a:hover::before {
+// restrict hover effects on #nav-links to non-mobile screen sizes
+
+.responsive-large #nav-links *:hover,
+.responsive-default #nav-links *:hover,
+.responsive-portrait #nav-links *:hover {
+  cursor: pointer;
+}
+
+.responsive-large #nav-links *:hover i.fa,
+.responsive-default #nav-links *:hover i.fa,
+.responsive-portrait #nav-links *:hover i.fa {
+  font-size: 1.2em !important;
+}
+
+.responsive-large #nav-links span:hover::before, .responsive-large #nav-links a:hover::before,
+.responsive-default #nav-links span:hover::before, .responsive-default #nav-links a:hover::before,
+.responsive-portrait #nav-links span:hover::before, .responsive-portrait #nav-links a:hover::before {
   position: absolute;
   width: 100%
   height: 100%;
