@@ -27,6 +27,11 @@ function responsiveClass () {
 responsiveClass();
 $(window).smartresize(function(){ responsiveClass(); });
 
+
+// one way around the hover/tap problem on touch devices
+$('a').on('dbltap', function(){ this.click(); });
+
+
 /*
 
 Make the cursor more fun.
@@ -125,22 +130,33 @@ var Floater = (function() {
       // distance between centers of the two floaters
       distance = Math.sqrt( Math.pow(this.x - floaters[i].x, 2) + Math.pow(this.y - floaters[i].y, 2) );
 
+      // detect and handle collisions between floaters
       if ( distance <= 2 * floaterRadius ) {
         // collision normal
         nx = (this.x - floaters[i].x) / distance;
         ny = (this.y - floaters[i].y) / distance;
 
         if (this.frozen) {
-          // reflect other velocity across n
+          // other bounces off this and this is unaffected
           twodot = 2 * (other.vx * nx + other.vy * ny);
           other.vx = other.vx - twodot * nx;
           other.vy = other.vy - twodot * ny;
 
+          // instantaneously undo any overlap to avoid feedback errors
+          halfOverlap = floaterRadius - distance / 2;
+          other.x += other.vx * halfOverlap;
+          other.y += other.vy * halfOverlap;
+
         } else if (other.frozen) {
-          // reflect this velocity across n
+          // this bounces off other and other is unaffected
           twodot = 2 * (this.vx * nx + this.vy * ny);
           this.vx = this.vx - twodot * nx;
           this.vy = this.vy - twodot * ny;
+
+          // instantaneously undo any overlap to avoid feedback errors
+          halfOverlap = floaterRadius - distance / 2;
+          this.x += this.vx * halfOverlap;
+          this.y += this.vy * halfOverlap;
 
         } else {
           // newtonian elastic collision with two free 2D bodies of equal mass
@@ -165,14 +181,12 @@ var Floater = (function() {
       }
     };
 
-    // detect boundary collisions
+    // detect and handle boundary collisions
 
     if (this.x < minX) {
       this.x += minX - this.x;
       this.vx = -this.vx;
-    }
-
-    if (this.x > maxX) {
+    } else if (this.x > maxX) {
       this.x += maxX - this.x;
       this.vx = -this.vx;
     }
@@ -180,9 +194,7 @@ var Floater = (function() {
     if (this.y < minY) {
       this.y += minY - this.y;
       this.vy = -this.vy;
-    }
-
-    if (this.y > maxY) {
+    } else if (this.y > maxY) {
       this.y += maxY - this.y;
       this.vy = -this.vy;
     }

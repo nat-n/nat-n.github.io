@@ -76,8 +76,8 @@ body {
 }
 
 #container {
-  //min-width: 950px;
   min-height: 500px;
+  overflow-x: hidden;
 }
 
 /*
@@ -268,6 +268,7 @@ h1 span.first-letter {
 #bubble-wrapper {
   position: absolute;
   top: 258px;
+  min-height: 86px;
   bottom: 0;
   margin: 0;
   padding: 0;
