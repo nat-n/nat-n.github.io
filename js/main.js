@@ -34,7 +34,7 @@ var Floater = (function() {
       floaterRadius = 43;
 
   function Floater(element) {
-    var self = this;
+    var a_tag, self = this;
 
     // floater knows it's index in floaters array
     this.i = floaters.length;
@@ -50,6 +50,10 @@ var Floater = (function() {
       self.frozen = false;
     };
 
+    // move the title a attr to data-title so we can control the styling
+    if (a_tag = $(this.element).children('a')) {
+      a_tag.attr("data-title", a_tag.attr("title")).removeAttr("title");
+    }
 
     // set initial position
     this.x = minX + Math.random() * (maxX - minX);
@@ -81,7 +85,7 @@ var Floater = (function() {
 
 
   Floater.prototype.tick = function(delta) {
-    var f, vx, vy, nx, ny, distance, i, other, factor;
+    var f, nx, ny, distance, i, other, factor, twodot, halfOverlap;
     // add dynamic forces
     // weak attraction to mouse?
     // random drift force? calculated from time depended sinwave field?
@@ -91,6 +95,7 @@ var Floater = (function() {
     if (!this.frozen) {
       this.x += this.vx * delta;
       this.y += this.vy * delta;
+    } else {
     }
 
     // detect bubble collisions
@@ -107,13 +112,38 @@ var Floater = (function() {
         nx = (this.x - floaters[i].x) / distance;
         ny = (this.y - floaters[i].y) / distance;
 
-        // simplified elastic collision factor
-        factor = (this.vx * nx + this.vy * ny) - (other.vx * nx + other.vy * ny);
+        if (this.frozen) {
+          // reflect other velocity across n
+          twodot = 2 * (other.vx * nx + other.vy * ny);
+          other.vx = other.vx - twodot * nx;
+          other.vy = other.vy - twodot * ny;
 
-        this.vx -= factor * nx;
-        this.vy -= factor * ny;
-        other.vx += factor * nx;
-        other.vy += factor * ny;
+        } else if (other.frozen) {
+          // reflect this velocity across n
+          twodot = 2 * (this.vx * nx + this.vy * ny);
+          this.vx = this.vx - twodot * nx;
+          this.vy = this.vy - twodot * ny;
+
+        } else {
+          // newtonian elastic collision with two free 2D bodies of equal mass
+
+          // simplified elastic collision factor
+          factor = (this.vx * nx + this.vy * ny) - (other.vx * nx + other.vy * ny);
+
+          // make them bounce
+          this.vx -= factor * nx;
+          this.vy -= factor * ny;
+          other.vx += factor * nx;
+          other.vy += factor * ny;
+
+          // instantly undo any overlap between floaters that occured between ticks
+          halfOverlap = floaterRadius - distance / 2;
+          this.x += nx * halfOverlap;
+          this.y += ny * halfOverlap;
+          other.x -= nx * halfOverlap;
+          other.y -= ny * halfOverlap;
+
+        }
       }
     };
 

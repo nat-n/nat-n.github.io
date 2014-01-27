@@ -40,6 +40,7 @@ html, body, #container {
 }
 
 body {
+  background-color: #cdcdcd;
   background-image: url('../img/silvernoise.png');
 }
 
@@ -67,13 +68,14 @@ body {
   font-family: Cinzel, Times New Roman;
   font-weight: lighter;
   font-size: 60px;
-  text-indent: 150px;
   text-transform: uppercase;
   text-shadow: -1px -1px #bbb;
   display: inline-block;
   float: left;
   margin-top: 35px;
   margin-bottom: 0;
+  margin-left: 150px;
+  width: 590px;
 }
 
 h1 span.first-letter {
@@ -163,12 +165,12 @@ h1 span.first-letter {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  top: 0;
+  top: -3px;
   height: 100%;
   display: block;
   left:0;
   right: 0;
-  min-height: 400px;
+  min-height: 200px;
   width: 100%;
 
   opacity: 1;
@@ -187,8 +189,8 @@ h1 span.first-letter {
   vertical-align: middle;
   z-index: 7;
 
-  transition: all 0.01s linear;
-  -webkit-transition: all 0.05s linear;
+  //transition: all 0.01s linear;
+  //-webkit-transition: all 0.05s linear;
 }
 
 .bubble span, .bubble a {
@@ -203,6 +205,23 @@ h1 span.first-letter {
   text-decoration: none;
   cursor: pointer;
   z-index: 5;
+}
+
+.bubble a[data-title]:hover:after {
+  content: attr(data-title);
+  text-shadow: 0 0 5px #888, 0 1px 6px #888, 0 2px 7px #888;
+  position: absolute;
+  top: 54px;
+  left: -53px;
+  width: 200px;
+  height: 40px;
+  line-height: 20px;
+  opacity: 0.8;
+  text-align: center;
+  padding: 2px;
+  border-radius: 15px;
+  z-index: 10;
+
 }
 
 .bubble span:hover, .bubble a:hover {
