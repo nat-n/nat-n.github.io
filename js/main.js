@@ -1,8 +1,31 @@
 'use strict'
 
+// remove setup class on load
+
 $(window).bind("load", function(){
   $('#container.setup').removeClass('setup');
 });
+
+// maintain responsive classes
+var container = $('#container');
+function responsiveClass () {
+  // use window widths
+  var w = window.innerWidth;
+  container.removeClass('responsive-large responsive-default responsive-portrait responsive-tablets responsive-phones');
+  if (w >= 1200) {       // Large display
+    container.addClass('responsive-large');
+  } else if (w >= 980) { // Default
+    container.addClass('responsive-default');
+  } else if (w >= 768) { // Portrait tablets
+    container.addClass('responsive-portrait');
+  } else if (w >= 480) { // Phones to tablets
+    container.addClass('responsive-tablets');
+  } else {               // Phones
+    container.addClass('responsive-phones');
+  }
+};
+responsiveClass();
+$(window).smartresize(function(){ responsiveClass(); });
 
 /*
 
@@ -77,12 +100,6 @@ var Floater = (function() {
     maxY = minY + linkarea.height() - floaterRadius * 2;
   }
   window.onresize = updateBounds;
-
-  // dot product of two vectors represented as arrays
-  function dotprod2D(ax, ay, bx, by) {
-    return ax * bx + ay * by;
-  }
-
 
   Floater.prototype.tick = function(delta) {
     var f, nx, ny, distance, i, other, factor, twodot, halfOverlap;
