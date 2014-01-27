@@ -99,7 +99,8 @@ var Floater = (function() {
     maxX = pos.left + linkarea.width() - floaterRadius * 2;
     maxY = minY + linkarea.height() - floaterRadius * 2;
   }
-  window.onresize = updateBounds;
+  $(window).smartresize(updateBounds);
+  //window.onresize = updateBounds;
 
   Floater.prototype.tick = function(delta) {
     var f, nx, ny, distance, i, other, factor, twodot, halfOverlap;
