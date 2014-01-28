@@ -275,6 +275,12 @@ h1 span.first-letter {
   opacity: 0.5;
 }
 
+/*
+
+  one fancy list of links with a header
+
+*/
+
 #bubble-wrapper {
   position: absolute;
   top: 258px;
@@ -379,17 +385,11 @@ h1 span.first-letter {
   pointer-events: none;
 }
 
-/* this should be a ripple inserted behind the bubble */
-.bubble-splode-start {
+/*
 
-}
+  cursor triggered animations
 
-.bubble-splode-go {
-  width: 1000px;
-  height: 1000px;
-  margin-left: -500px;
-  margin-top: -500px;
-}
+*/
 
 #cursor-fun .ripple {
   z-index: 4;
@@ -404,7 +404,7 @@ h1 span.first-letter {
   -webkit-transition: all 0.9s linear;
 }
 
-#cursor-fun .ripple-grow {
+#cursor-fun .ripple.ripple-grow {
   width: 70px;
   height: 70px;
   margin-left: -25px;
@@ -412,3 +412,17 @@ h1 span.first-letter {
   opacity: 0;
 }
 
+#cursor-fun .ripple.big-ripple {
+  border: solid 2px #ddd;
+  transition: all 0.9s ease-in;
+  -webkit-transition: all 0.9s ease-in;
+}
+
+#cursor-fun .ripple.big-ripple.ripple-grow {
+  width: 3000px;
+  height: 3000px;
+  margin-left: -1500px;
+  margin-top: -1500px;
+  border-radius: 1500px;
+  opacity: 0.3;
+}

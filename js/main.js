@@ -49,6 +49,22 @@ window.onmousemove = function(e){
   setTimeout(function(){ ripple.remove(); }, 1000);;
 };
 
+// big ripple animation for clicks
+function bigRipple(x, y) {
+  var ripple = $('<div></div>')
+    .addClass('ripple big-ripple')
+    .offset({ top: y, left: x});
+  rippleDiv.append(ripple);
+  setTimeout(function(){ ripple.addClass('ripple-grow'); });
+  setTimeout(function(){ ripple.remove(); }, 1000);
+};
+
+// make a big ripple from the icon when a nav link is clicked
+$('#nav-links span, #nav-links a').click(function(e){
+  var o = $(this.children[0]).offset();
+  bigRipple(o.left+5, o.top+5);
+});
+
 
 /*
 
@@ -58,7 +74,7 @@ Make the bubbles drift dreamily.
 
 var Floater = (function() {
   var minY, minX, maxY, maxX, updateBounds;
-  var linkarea = $('div#bubble-wrapper'),
+  var floaterArea = $('div#bubble-wrapper'),
       floaterRadius = 43;
 
   function Floater(element) {
@@ -67,7 +83,7 @@ var Floater = (function() {
     // floater knows it's index in floaters array
     this.i = floaters.length;
 
-    // set max bounds based on size/position of div.linkarea
+    // set max bounds based on size/position of div.floaterArea
     updateBounds();
 
     this.element = element;
@@ -76,6 +92,10 @@ var Floater = (function() {
     };
     this.element.onmouseout = function(e){
       self.frozen = false;
+    };
+
+    this.element.onclick = function(e){
+      bigRipple(floaterArea.offset().left+self.x+floaterRadius, floaterArea.offset().top+self.y+floaterRadius);
     };
 
     // move the title a attr to data-title so we can control the styling
@@ -98,11 +118,11 @@ var Floater = (function() {
   };
 
   updateBounds = function() {
-    var pos = linkarea.position();
+    var pos = floaterArea.position();
     minY = 0;
     minX = 0;
-    maxX = pos.left + linkarea.width() - floaterRadius * 2;
-    maxY = minY + linkarea.height() - floaterRadius * 2;
+    maxX = pos.left + floaterArea.width() - floaterRadius * 2;
+    maxY = minY + floaterArea.height() - floaterRadius * 2;
   }
   $(window).smartresize(updateBounds);
   //window.onresize = updateBounds;
