@@ -188,6 +188,8 @@ Main layout and styles
   background-repeat: repeat-x;
   transition: margin-top 0.3s ease;
   -webkit-transition: margin-top 0.3s ease;
+  -moz-transition: margin-top 0.3s ease;
+  -o-transition: margin-top 0.3s ease;
 }
 
 .setup #banner {
@@ -301,6 +303,8 @@ h1 span.first-letter {
   opacity: 0.12;
   text-shadow: -1px -1px #bbb;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
   user-select: none;
 }
 
@@ -324,6 +328,8 @@ h1 span.first-letter {
   opacity: 1;
   transition: opacity 0.2s linear;
   -webkit-transition: opacity 0.2s linear;
+  -moz-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
 }
 
 .bubble {
@@ -336,9 +342,6 @@ h1 span.first-letter {
   border-radius: 50px
   vertical-align: middle;
   z-index: 7;
-
-  //transition: all 0.01s linear;
-  //-webkit-transition: all 0.05s linear;
 }
 
 .bubble span, .bubble a {
@@ -402,6 +405,8 @@ h1 span.first-letter {
   opacity: 1;
   transition: all 0.9s linear;
   -webkit-transition: all 0.9s linear;
+  -moz-transition: all 0.9s linear;
+  -o-transition: all 0.9s linear;
 }
 
 #cursor-fun .ripple.ripple-grow {
@@ -416,6 +421,8 @@ h1 span.first-letter {
   border: solid 2px #ddd;
   transition: all 0.9s ease-in;
   -webkit-transition: all 0.9s ease-in;
+  -moz-transition: all 0.9s ease-in;
+  -o-transition: all 0.9s ease-in;
 }
 
 #cursor-fun .ripple.big-ripple.ripple-grow {
