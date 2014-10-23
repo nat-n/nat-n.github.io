@@ -258,8 +258,10 @@ var time;
   for (i = 0; i < floaters.length; i++) {
     f = floaters[i];
     f.tick(delta);
-    f.element.style.setProperty('left', f.x + 'px');
-    f.element.style.setProperty('top', f.y + 'px');
+    f.element.style.setProperty(
+      'transform',
+      'translateX('+f.x+'px) translateY('+f.y+'px)'
+    );
   }
 })();
 
