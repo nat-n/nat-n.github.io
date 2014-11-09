@@ -1,12 +1,13 @@
 'use strict'
 
-// remove setup class on load
+// Remove setup class on load
 
 $(window).bind("load", function(){
   $('#container.setup').removeClass('setup');
 });
 
-// maintain responsive classes
+// Maintain responsive classes
+
 var container = $('#container');
 function responsiveClass () {
   // use window widths
@@ -28,7 +29,7 @@ responsiveClass();
 $(window).smartresize(function(){ responsiveClass(); });
 
 
-// one way around the hover/tap problem on touch devices
+// One way around the hover/tap problem on touch devices
 $('a').on('dbltap', function(){ this.click(); });
 
 
@@ -129,9 +130,10 @@ var Floater = (function() {
 
   Floater.prototype.tick = function(delta) {
     var f, nx, ny, distance, i, other, factor, twodot, halfOverlap;
+    // TODO:
     // add dynamic forces
     // weak attraction to mouse?
-    // random drift force? calculated from time depended sinwave field?
+    // random drift force? calculated from time dependant sinwave field?
 
 
     // add velocity
@@ -234,7 +236,7 @@ $('.bubble').each(function(i){
 });
 
 
-// animate floaters
+// Animate floaters
 
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
@@ -246,7 +248,7 @@ window.requestAnimFrame = (function(){
 })();
 
 var time;
-(function bubbleLoop(){
+setTimeout(function bubbleLoop(){
   var i, f, now, delta;
 
   requestAnimFrame(bubbleLoop);
@@ -258,15 +260,14 @@ var time;
   for (i = 0; i < floaters.length; i++) {
     f = floaters[i];
     f.tick(delta);
-    f.element.style.setProperty(
-      'transform',
-      'translateX('+f.x+'px) translateY('+f.y+'px)'
-    );
+    f.element.style.transform = 'translateX('+f.x+'px) translateY('+f.y+'px)';
+    f.element.style['-webkit-transform'] = 'translateX('+f.x+'px) translateY('+f.y+'px)';
+    // console.log(f.element.style['-webkit-transform'], f.element.style['transform'])
   }
-})();
+});
 
 
-// super obfusticated mail action
+// Super obfusticated mail action
 
 $('.compose').click(function() {
   var i, str = "";
