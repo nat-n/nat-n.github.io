@@ -262,7 +262,6 @@ setTimeout(function bubbleLoop(){
     f.tick(delta);
     f.element.style.transform = 'translateX('+f.x+'px) translateY('+f.y+'px)';
     f.element.style['-webkit-transform'] = 'translateX('+f.x+'px) translateY('+f.y+'px)';
-    // console.log(f.element.style['-webkit-transform'], f.element.style['transform'])
   }
 });
 
