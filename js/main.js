@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 // Remove setup class on load
 
-$(window).bind("load", function(){
+$(window).bind("load", function () {
   $('#container.setup').removeClass('setup');
 });
 
@@ -24,13 +24,13 @@ function responsiveClass () {
   } else {               // Phones
     container.addClass('responsive-phones');
   }
-};
+}
 responsiveClass();
-$(window).smartresize(function(){ responsiveClass(); });
+$(window).smartresize(function () { responsiveClass(); });
 
 
 // One way around the hover/tap problem on touch devices
-$('a').on('dbltap', function(){ this.click(); });
+$('a').on('dbltap', function () { this.click(); });
 
 
 /*
@@ -41,13 +41,13 @@ Make the cursor more fun.
 
 var rippleDiv = $('#cursor-fun')
 
-window.onmousemove = function(e){
+window.onmousemove = function (e){
   var ripple = $('<div></div>')
     .addClass('ripple')
     .offset({ top: e.pageY, left: e.pageX});
   rippleDiv.append(ripple);
-  setTimeout(function(){ ripple.addClass('ripple-grow'); });
-  setTimeout(function(){ ripple.remove(); }, 1000);;
+  setTimeout(function () { ripple.addClass('ripple-grow'); });
+  setTimeout(function () { ripple.remove(); }, 1000);;
 };
 
 // big ripple animation for clicks
@@ -56,12 +56,12 @@ function bigRipple(x, y) {
     .addClass('ripple big-ripple')
     .offset({ top: y, left: x});
   rippleDiv.append(ripple);
-  setTimeout(function(){ ripple.addClass('ripple-grow'); });
-  setTimeout(function(){ ripple.remove(); }, 1000);
+  setTimeout(function () { ripple.addClass('ripple-grow'); });
+  setTimeout(function () { ripple.remove(); }, 1000);
 };
 
 // make a big ripple from the icon when a nav link is clicked
-$('#nav-links span, #nav-links a').click(function(e){
+$('#nav-links span, #nav-links a').click(function (e){
   var o = $(this.children[0]).offset();
   bigRipple(o.left+5, o.top+5);
 });
@@ -73,9 +73,9 @@ Make the bubbles drift dreamily.
 
 */
 
-var Floater = (function() {
-  var minY, minX, maxY, maxX, updateBounds;
-  var floaterArea = $('div#bubble-wrapper'),
+var Floater = (function () {
+  var minY, minX, maxY, maxX, updateBounds,
+      floaterArea = $('div#bubble-wrapper'),
       floaterRadius = 43;
 
   function Floater(element) {
@@ -88,15 +88,12 @@ var Floater = (function() {
     updateBounds();
 
     this.element = element;
-    this.element.onmouseover = function(e){
-      self.frozen = true;
-    };
-    this.element.onmouseout = function(e){
-      self.frozen = false;
-    };
+    this.element.onmouseover = function (e) { self.frozen = true; };
+    this.element.onmouseout  = function (e) { self.frozen = false; };
 
-    this.element.onclick = function(e){
-      bigRipple(floaterArea.offset().left+self.x+floaterRadius, floaterArea.offset().top+self.y+floaterRadius);
+    this.element.onclick = function (e) {
+      bigRipple(floaterArea.offset().left+self.x+floaterRadius,
+                floaterArea.offset().top+self.y+floaterRadius);
     };
 
     // move the title a attr to data-title so we can control the styling
@@ -118,7 +115,7 @@ var Floater = (function() {
     this.fy
   };
 
-  updateBounds = function() {
+  function updateBounds() {
     var pos = floaterArea.position();
     minY = 0;
     minX = 0;
@@ -126,21 +123,14 @@ var Floater = (function() {
     maxY = minY + floaterArea.height() - floaterRadius * 2;
   }
   $(window).smartresize(updateBounds);
-  //window.onresize = updateBounds;
 
-  Floater.prototype.tick = function(delta) {
+  Floater.prototype.tick = function (delta) {
     var f, nx, ny, distance, i, other, factor, twodot, halfOverlap;
-    // TODO:
-    // add dynamic forces
-    // weak attraction to mouse?
-    // random drift force? calculated from time dependant sinwave field?
-
 
     // add velocity
     if (!this.frozen) {
       this.x += this.vx * delta;
       this.y += this.vy * delta;
-    } else {
     }
 
     // detect bubble collisions
@@ -231,24 +221,22 @@ var Floater = (function() {
 
 var floaters = [];
 window.floaters = floaters;
-$('.bubble').each(function(i){
+$('.bubble').each(function (i) {
   floaters.push(new Floater(this));
 });
 
 
 // Animate floaters
 
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame       ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          function( callback ){
-            window.setTimeout(callback, 1000 / 60);
-          };
+window.requestAnimFrame = (function () {
+  return window.requestAnimationFrame       ||
+         window.webkitRequestAnimationFrame ||
+         window.mozRequestAnimationFrame    ||
+         function (callback) { window.setTimeout(callback, 1000 / 60); };
 })();
 
 var time;
-setTimeout(function bubbleLoop(){
+setTimeout(function bubbleLoop() {
   var i, f, now, delta;
 
   requestAnimFrame(bubbleLoop);
@@ -268,7 +256,7 @@ setTimeout(function bubbleLoop(){
 
 // Super obfusticated mail action
 
-$('.compose').click(function() {
+$('.compose').click(function () {
   var i, str = "";
   var codes = [109, 97, 105, 108, 116, 111, 58, 104, 101, 108, 108, 111, 64, 110, 97, 116, 110, 46, 109, 101];
   for (i = 0; i < codes.length; i++) str += String.fromCharCode(codes[i]);
