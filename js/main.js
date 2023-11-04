@@ -258,7 +258,7 @@ setTimeout(function bubbleLoop() {
 
 $('.compose').click(function () {
   var i, str = "";
-  var codes = [109, 97, 105, 108, 116, 111, 58, 104, 101, 108, 108, 111, 64, 110, 97, 116, 110, 46, 109, 101];
+  var codes = [109, 97, 105, 108, 116, 111, 58, 110, 64, 110, 111, 111, 114, 100, 97, 110, 46, 117, 115];
   for (i = 0; i < codes.length; i++) str += String.fromCharCode(codes[i]);
   document.location.href = str;
 });
